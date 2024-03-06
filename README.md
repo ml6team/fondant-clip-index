@@ -27,8 +27,17 @@
 This repository contains the code to build a CLIP index for the Datacomp-12.8M dataset with 
 Fondant. It should be straightforward to apply it to a different dataset.
 
-The resulting index has been published on the Hugging Face Hub [here](link). Continue reading 
-below to learn:
+The resulting embedded dataset and index have been published on the Hugging Face Hub 
+[here](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip). The data repository is 
+structured as follows:
+- [data/](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/viewer): The dataset 
+  containing ids, urls, and CLIP embeddings
+- [faiss](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/blob/main/faiss): 
+  The faiss index
+- [id_mapping/](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/tree/main/id_mapping): 
+  The mapping of the faiss ids to the original urls
+
+Continue reading below to learn:
 - [Why we need a CLIP index](#why-a-clip-index)
 - [How to use the CLIP index](#using-the-index)
 - [Which steps are needed to create the index](#creating-the-index)
@@ -37,12 +46,15 @@ below to learn:
 
 ## Why a CLIP index?
 
-Large (image) datasets are often unwieldy to use due to their sheer size. Filtering them down to
-a useful subset of specific images is expensive if you need to look at every image. Especially
-if this is done over and over again for different use cases. Instead, we can look at every image
-once, and calculate a (CLIP) embedding representing its content. Combining these embeddings into
-an index, we can search through the dataset with a query, finding specific images without
-having to look at each one.
+Large (image) datasets are often unwieldy to use due to their sheer size. Assume for instance
+that we would like to extract all the cat images from such a dataset. We would have to look at
+every image to classify if it's a cat image or not. And if we want to extract all the dog images
+next, we again need to look at every image.
+
+Instead, we can look at every image once, and calculate a (CLIP) embedding representing its
+content. Combining these embeddings into an index, we can efficiently search through the dataset
+with a query, finding specific images, without having to look at each one.
+
 
 ![CLIP index](docs/art/clip_index.png)
 
@@ -83,9 +95,9 @@ working using the [`exploration.ipynb`](exploration.ipynb) notebook.
 ### With Fondant
 
 The easiest way to use the index, is using Fondant. Fondant offers reusable operations which
-allow you to query the index with your data, either prompts or images:
-- link
-- link
+allow you to query the index with your data:
+- [By prompt](https://fondant.ai/en/latest/components/hub/#retrieve_from_faiss_by_prompt#description)
+- [By embedding](https://fondant.ai/en/latest/components/hub/#retrieve_from_faiss_by_embedding#description)
 
 To see how it can be used in an end-to-end example, check our 
 [ControlNet example](https://github.com/ml6team/fondant-usecase-controlnet) which
@@ -99,29 +111,8 @@ hosting the index accessible by API.
 
 ## Execution details
 
-### Download images
-
-We downloaded the images with 32 cores in parallel, each opening up to 25 concurrent connections,
-and achieved a success rate of 72%, resulting in 9.251.172 images.
-
-The downloading was executed on a VM on GCP using the Fondant Docker runner. We originally 
-planned to run this on Vertex AI, but moved to a VM when noticing lower network bandwidth on Vertex.
-
-The success rate can probably be further improved by setting up a faster DNS resolver.
-
-### Embed images
-
-We leveraged the 
-[`laion/CLIP-ViT-B-32-laion2B-s34B-b79K`](https://huggingface.co/laion/CLIP-ViT-B-32-laion2B-s34B-b79K) 
-CLIP model. We chose this model because of a couple of reasons. It is popular, which makes it 
-easy to use with existing embeddings, it is small, which makes it cheap to run, and it is an open 
-model trained on open data.
-
-We appreciate any feedback on our choice of model, so we can take this into account if we
-generate indices for larger datasets in the future.
-
-The embedding was executed on 4 T4 GPUs on Google Cloud using our Vertex AI runner, with a batch
-size of 32. The execution took 8:15 hours.
+For the execution details of our 12.8M run, check the 
+[announcement](https://fondant.ai/en/stable/blog/2024/03/05/building-a-datacomp-clip-index-with-fondant/).
 
 ## What's next
 
