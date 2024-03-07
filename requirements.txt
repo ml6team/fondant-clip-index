@@ -1,0 +1,3 @@
+fondant[vertex,gcp]==0.11
+notebook==7.0.8
+autofaiss==2.17.0
