@@ -84,6 +84,17 @@ The pipeline consists of 4 steps:
 - A [`write_to_file`](https://fondant.ai/en/stable/components/hub/#write_to_file#description) 
   operation which writes the original urls and generated embeddings to the chosen destination.
 
+You can run it by installing fondant:
+```shell
+pip install fondant==0.11.0
+```
+and running it with your runner of choice:
+```shell
+fondant run <runner> pipeline.py
+```
+
+Check the [fondant documentation](https://fondant.ai/en/latest/runners/local/) for more info.
+
 After running the pipeline, we used [`autofaiss`](https://github.com/criteo/autofaiss) to build the 
 CLIP index. You can use the included wrapper script [`build_index.py`](build_index.py).
 
