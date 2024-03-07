@@ -30,11 +30,11 @@ Fondant. It should be straightforward to apply it to a different dataset.
 The resulting embedded dataset and index have been published on the Hugging Face Hub 
 [here](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip). The data repository is 
 structured as follows:
-- [data/](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/viewer): The dataset 
-  containing ids, urls, and CLIP embeddings
+- [data/](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/viewer/embeddings): The 
+  dataset containing ids, urls, and CLIP embeddings
 - [faiss](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/blob/main/faiss): 
   The faiss index
-- [id_mapping/](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/tree/main/id_mapping): 
+- [id_mapping/](https://huggingface.co/datasets/fondant-ai/datacomp-small-clip/viewer/id_mapping): 
   The mapping of the faiss ids to the original urls
 
 Continue reading below to learn:
